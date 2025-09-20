@@ -26,10 +26,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
-    # - assets/images/ # Папка с изображениями
-    # - assets/icons/ # Иконки
-    # - assets/data/ # Локальные JSON-файлы (если нужны)
+    # - assets/
+    - assets/images/ # Папка с изображениями
+    - assets/icons/ # Иконки
+    - assets/data/ # Локальные JSON-файлы (если нужны)
   fonts:
     - family: SomeFont # Кастомные шрифты (если используются)
       fonts:

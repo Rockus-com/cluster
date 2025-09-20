@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:secretary/screens/colleagues/colleagues_screen.dart';
-import 'package:secretary/screens/groups/groups_screen.dart';
-import 'package:secretary/screens/schedule/schedule_screen.dart';
-import 'package:secretary/screens/tasks/tasks_screen.dart';
-import 'package:secretary/screens/auth/login_screen.dart';
+import 'package:cluster/screens/colleagues/colleagues_screen.dart';
+import 'package:cluster/screens/groups/groups_screen.dart';
+import 'package:cluster/screens/schedule/schedule_screen.dart';
+import 'package:cluster/screens/tasks/tasks_screen.dart';
+import 'package:cluster/screens/auth/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

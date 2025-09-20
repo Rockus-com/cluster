@@ -1,7 +1,7 @@
+import 'package:cluster/screens/groups/groups_detail_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:secretary/database/models.dart';
-import 'package:secretary/repositories/repositories.dart';
-import 'package:secretary/screens/groups/group_detail_screen.dart';
+import 'package:cluster/database/models.dart';
+import 'package:cluster/repositories/repositories.dart';
 
 class GroupsScreen extends StatefulWidget {
   const GroupsScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:secretary/database/models.dart';
-import 'package:secretary/repositories/repositories.dart';
-import 'package:secretary/screens/auth/login_screen.dart';
+import 'package:cluster/database/models.dart';
+import 'package:cluster/repositories/repositories.dart';
+import 'package:cluster/screens/auth/login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,7 +15,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   User? _currentUser;
   bool _isLoading = true;
   bool _isEditing = false;
-  
+
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -133,7 +133,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
-                if (newPasswordController.text != confirmPasswordController.text) {
+                if (newPasswordController.text !=
+                    confirmPasswordController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Пароли не совпадают')),
                   );
@@ -260,7 +261,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           radius: 50,
                           backgroundColor: Colors.blue[100],
                           child: Text(
-                            _currentUser!.fullName.split(' ').map((n) => n[0]).take(2).join(),
+                            _currentUser!.fullName
+                                .split(' ')
+                                .map((n) => n[0])
+                                .take(2)
+                                .join(),
                             style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -269,18 +274,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      
+
                       // Информация о пользователе
                       _buildInfoField('ФИО', _fullNameController, _isEditing),
-                      _buildInfoField('Должность', _positionController, _isEditing),
-                      _buildInfoField('Отдел', _departmentController, _isEditing),
+                      _buildInfoField(
+                          'Должность', _positionController, _isEditing),
+                      _buildInfoField(
+                          'Отдел', _departmentController, _isEditing),
                       _buildInfoField('Email', _emailController, _isEditing),
                       _buildInfoField('Телефон', _phoneController, _isEditing),
-                      _buildInfoField('Логин', TextEditingController(text: _currentUser!.username), false),
-                      _buildInfoField('Роль', TextEditingController(text: _currentUser!.role), false),
-                      
+                      _buildInfoField(
+                          'Логин',
+                          TextEditingController(text: _currentUser!.username),
+                          false),
+                      _buildInfoField(
+                          'Роль',
+                          TextEditingController(text: _currentUser!.role),
+                          false),
+
                       const SizedBox(height: 24),
-                      
+
                       // Кнопка смены пароля
                       SizedBox(
                         width: double.infinity,
@@ -293,9 +306,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(height: 16),
-                      
+
                       // Кнопка выхода
                       SizedBox(
                         width: double.infinity,
@@ -316,7 +329,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildInfoField(String label, TextEditingController controller, bool editable) {
+  Widget _buildInfoField(
+      String label, TextEditingController controller, bool editable) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
@@ -335,12 +349,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   controller: controller,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 16),
                   ),
                 )
               : Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.circular(4),

@@ -1,7 +1,7 @@
+import 'package:cluster/screens/tasks/task_detail.dart';
 import 'package:flutter/material.dart';
-import 'package:secretary/database/models.dart';
-import 'package:secretary/repositories/repositories.dart';
-import 'package:secretary/screens/tasks/task_detail_screen.dart';
+import 'package:cluster/database/models.dart';
+import 'package:cluster/repositories/repositories.dart';
 import 'package:intl/intl.dart';
 
 class ColleaguesScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class _ColleaguesScreenState extends State<ColleaguesScreen> {
   final ColleagueRepository _colleagueRepository = ColleagueRepository();
   final GroupRepository _groupRepository = GroupRepository();
   final TaskRepository _taskRepository = TaskRepository();
-  
+
   List<Colleague> _colleagues = [];
   bool _isLoading = true;
 
@@ -144,14 +144,16 @@ class ColleagueDetailBottomSheet extends StatefulWidget {
   const ColleagueDetailBottomSheet({super.key, required this.colleague});
 
   @override
-  _ColleagueDetailBottomSheetState createState() => _ColleagueDetailBottomSheetState();
+  _ColleagueDetailBottomSheetState createState() =>
+      _ColleagueDetailBottomSheetState();
 }
 
-class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet> {
+class _ColleagueDetailBottomSheetState
+    extends State<ColleagueDetailBottomSheet> {
   final ColleagueRepository _colleagueRepository = ColleagueRepository();
   final GroupRepository _groupRepository = GroupRepository();
   final TaskRepository _taskRepository = TaskRepository();
-  
+
   List<Group> _groups = [];
   List<Task> _tasks = [];
   bool _isLoading = true;
@@ -164,9 +166,11 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
 
   Future<void> _loadColleagueData() async {
     try {
-      final groups = await _groupRepository.getGroupsForColleague(widget.colleague.id);
-      final tasks = await _colleagueRepository.getTasksForColleague(widget.colleague.id);
-      
+      final groups =
+          await _groupRepository.getGroupsForColleague(widget.colleague.id);
+      final tasks =
+          await _colleagueRepository.getTasksForColleague(widget.colleague.id);
+
       setState(() {
         _groups = groups;
         _tasks = tasks;
@@ -207,7 +211,7 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Заголовок
                     Center(
                       child: Text(
@@ -219,7 +223,7 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                       ),
                     ),
                     const SizedBox(height: 8),
-                    
+
                     // Должность и отдел
                     Center(
                       child: Text(
@@ -231,7 +235,7 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     // Контакты
                     const Text(
                       'Контакты:',
@@ -241,7 +245,7 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                     _buildContactInfo(Icons.email, widget.colleague.email),
                     _buildContactInfo(Icons.phone, widget.colleague.phone),
                     const SizedBox(height: 16),
-                    
+
                     // Группы
                     const Text(
                       'Группы:',
@@ -260,7 +264,7 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                             }).toList(),
                           ),
                     const SizedBox(height: 16),
-                    
+
                     // Статистика задач
                     const Text(
                       'Задачи:',
@@ -269,7 +273,7 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                     const SizedBox(height: 8),
                     _buildTaskStatistics(),
                     const SizedBox(height: 16),
-                    
+
                     // Список задач
                     Expanded(
                       child: ListView.builder(
@@ -302,16 +306,19 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
 
   Widget _buildTaskStatistics() {
     final totalTasks = _tasks.length;
-    final completedTasks = _tasks.where((task) => task.status == 'completed').length;
+    final completedTasks =
+        _tasks.where((task) => task.status == 'completed').length;
     final overdueTasks = _tasks.where((task) {
-      return task.status != 'completed' && task.deadline.isBefore(DateTime.now());
+      return task.status != 'completed' &&
+          task.deadline.isBefore(DateTime.now());
     }).length;
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _buildStatisticCard('Всего', totalTasks.toString(), Colors.blue),
-        _buildStatisticCard('Выполнено', completedTasks.toString(), Colors.green),
+        _buildStatisticCard(
+            'Выполнено', completedTasks.toString(), Colors.green),
         _buildStatisticCard('Просрочено', overdueTasks.toString(), Colors.red),
       ],
     );
@@ -338,8 +345,9 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
   }
 
   Widget _buildTaskCard(Task task, BuildContext context) {
-    final isOverdue = task.status != 'completed' && task.deadline.isBefore(DateTime.now());
-    
+    final isOverdue =
+        task.status != 'completed' && task.deadline.isBefore(DateTime.now());
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: InkWell(
@@ -379,11 +387,13 @@ class _ColleagueDetailBottomSheetState extends State<ColleagueDetailBottomSheet>
                     'Срок: ${DateFormat('dd.MM.yyyy').format(task.deadline)}',
                     style: TextStyle(
                       color: isOverdue ? Colors.red : Colors.grey,
-                      fontWeight: isOverdue ? FontWeight.bold : FontWeight.normal,
+                      fontWeight:
+                          isOverdue ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _getStatusColor(task.status),
                       borderRadius: BorderRadius.circular(12),

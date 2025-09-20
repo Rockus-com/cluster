@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:secretary/database/database_helper.dart';
-import 'package:secretary/repositories/repositories.dart';
-import 'package:secretary/screens/home/home_screen.dart';
+import 'package:cluster/database/database_helper.dart';
+import 'package:cluster/repositories/repositories.dart';
+import 'package:cluster/screens/home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // Логотип приложения
               const FlutterLogo(size: 80),
               const SizedBox(height: 20),
-              
+
               // Заголовок
               const Text(
                 'Секретарь',
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 10),
-              
+
               // Подзаголовок
               const Text(
                 'Управление школой',
@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 40),
-              
+
               // Поле логина
               TextFormField(
                 controller: _usernameController,
@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              
+
               // Поле пароля
               TextFormField(
                 controller: _passwordController,
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               const SizedBox(height: 30),
-              
+
               // Кнопка входа
               _isLoading
                   ? const CircularProgressIndicator()
@@ -108,21 +108,29 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Ссылка на восстановление пароля
               TextButton(
                 onPressed: () {
                   // TODO: Реализовать восстановление пароля
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Функция восстановления пароля в разработке'),
+                      content:
+                          Text('Функция восстановления пароля в разработке'),
                     ),
                   );
                 },
                 child: const Text('Забыли пароль?'),
               ),
+              IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomeScreen(),
+                      )),
+                  icon: Icon(Icons.arrow_right_alt))
             ],
           ),
         ),
@@ -135,13 +143,13 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
-      
+
       final username = _usernameController.text;
       final password = _passwordController.text;
-      
+
       try {
         final user = await _userRepository.getUserByUsername(username);
-        
+
         if (user != null && user.password == password) {
           // Успешный вход
           Navigator.pushReplacement(

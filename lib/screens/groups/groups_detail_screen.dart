@@ -1,9 +1,9 @@
+import 'package:cluster/screens/tasks/task_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:secretary/database/models.dart';
-import 'package:secretary/repositories/repositories.dart';
-import 'package:secretary/screens/tasks/task_detail_screen.dart';
+import 'package:cluster/database/models.dart';
+import 'package:cluster/repositories/repositories.dart';
 
 class GroupDetailScreen extends StatefulWidget {
   final Group group;
@@ -18,9 +18,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   final TaskRepository _taskRepository = TaskRepository();
   final GroupMessageRepository _messageRepository = GroupMessageRepository();
   final ColleagueRepository _colleagueRepository = ColleagueRepository();
-  final GroupNotificationRepository _notificationRepository = GroupNotificationRepository();
+  final GroupNotificationRepository _notificationRepository =
+      GroupNotificationRepository();
   final TextEditingController _messageController = TextEditingController();
-  
+
   List<Task> _tasks = [];
   List<GroupMessage> _messages = [];
   List<Colleague> _members = [];
@@ -30,7 +31,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   bool _isLoading = true;
   bool _isEditing = false;
   final TextEditingController _groupNameController = TextEditingController();
-  final TextEditingController _groupDescriptionController = TextEditingController();
+  final TextEditingController _groupDescriptionController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -44,19 +46,24 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
     try {
       // Загружаем задачи для участников группы
       final allTasks = await _taskRepository.getTasks();
-      _tasks = allTasks.where((task) => widget.group.memberIds.contains(task.assignedTo)).toList();
-      
+      _tasks = allTasks
+          .where((task) => widget.group.memberIds.contains(task.assignedTo))
+          .toList();
+
       // Загружаем сообщения группы
       _messages = await _messageRepository.getMessagesForGroup(widget.group.id);
-      
+
       // Загружаем информацию об участниках
       final allColleagues = await _colleagueRepository.getColleagues();
-      _members = allColleagues.where((colleague) => widget.group.memberIds.contains(colleague.id)).toList();
+      _members = allColleagues
+          .where((colleague) => widget.group.memberIds.contains(colleague.id))
+          .toList();
       _allColleagues = allColleagues;
-      
+
       // Загружаем количество непрочитанных сообщений
-      _unreadCount = await _notificationRepository.getUnreadCount(widget.group.id, 1); // 1 - ID текущего пользователя
-      
+      _unreadCount = await _notificationRepository.getUnreadCount(
+          widget.group.id, 1); // 1 - ID текущего пользователя
+
       setState(() {
         _isLoading = false;
       });
@@ -81,7 +88,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
   Future<void> _sendMessage() async {
     if (_messageController.text.trim().isEmpty) return;
-    
+
     final newMessage = GroupMessage(
       id: 0, // Будет присвоен автоматически
       groupId: widget.group.id,
@@ -90,22 +97,23 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
       sentAt: DateTime.now(),
       attachments: _attachments,
     );
-    
+
     try {
       await _messageRepository.insertMessage(newMessage);
-      
+
       // Отправляем уведомления другим участникам группы
       for (final member in _members) {
-        if (member.id != 1) { // Не отправляем уведомление себе
+        if (member.id != 1) {
+          // Не отправляем уведомление себе
           // В реальном приложении здесь будет вызов сервиса уведомлений
           // await NotificationService().showGroupMessageNotification(...);
         }
       }
-      
+
       _messageController.clear();
       _attachments.clear();
       await _loadGroupData(); // Перезагружаем сообщения
-      
+
       // Помечаем сообщения как прочитанные
       await _notificationRepository.markAsRead(widget.group.id, 1);
       setState(() {
@@ -128,7 +136,7 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
         createdAt: widget.group.createdAt,
         createdBy: widget.group.createdBy,
       );
-      
+
       await GroupRepository().updateGroup(updatedGroup);
       setState(() {
         _isEditing = false;
@@ -146,7 +154,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
   Future<void> _addMembers(List<int> newMemberIds) async {
     setState(() {
       widget.group.memberIds.addAll(newMemberIds);
-      widget.group.memberIds = widget.group.memberIds.toSet().toList(); // Убираем дубликаты
+      widget.group.memberIds =
+          widget.group.memberIds.toSet().toList(); // Убираем дубликаты
     });
     await _updateGroup();
     await _loadGroupData(); // Перезагружаем данные
@@ -245,10 +254,10 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                 children: [
                   // Вкладка задач
                   _buildTasksTab(),
-                  
+
                   // Вкладка чата
                   _buildChatTab(),
-                  
+
                   // Вкладка участников
                   _buildMembersTab(),
                 ],
@@ -265,8 +274,9 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
             itemCount: _tasks.length,
             itemBuilder: (context, index) {
               final task = _tasks[index];
-              final isOverdue = task.status != 'completed' && task.deadline.isBefore(DateTime.now());
-              
+              final isOverdue = task.status != 'completed' &&
+                  task.deadline.isBefore(DateTime.now());
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
                 child: ListTile(
@@ -283,13 +293,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                         'Срок: ${DateFormat('dd.MM.yyyy').format(task.deadline)}',
                         style: TextStyle(
                           color: isOverdue ? Colors.red : Colors.grey,
-                          fontWeight: isOverdue ? FontWeight.bold : FontWeight.normal,
+                          fontWeight:
+                              isOverdue ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
                   trailing: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: _getStatusColor(task.status),
                       borderRadius: BorderRadius.circular(12),
@@ -399,18 +411,24 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
                   leading: CircleAvatar(
                     backgroundColor: Colors.blue[100],
                     child: Text(
-                      member.fullName.split(' ').map((n) => n[0]).take(2).join(),
+                      member.fullName
+                          .split(' ')
+                          .map((n) => n[0])
+                          .take(2)
+                          .join(),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   title: Text(member.fullName),
                   subtitle: Text(member.position),
-                  trailing: _isEditing && member.id != 1 // Не позволяем удалить себя
-                      ? IconButton(
-                          icon: const Icon(Icons.remove_circle, color: Colors.red),
-                          onPressed: () => _removeMember(member.id),
-                        )
-                      : null,
+                  trailing:
+                      _isEditing && member.id != 1 // Не позволяем удалить себя
+                          ? IconButton(
+                              icon: const Icon(Icons.remove_circle,
+                                  color: Colors.red),
+                              onPressed: () => _removeMember(member.id),
+                            )
+                          : null,
                 ),
               );
             },
@@ -422,13 +440,15 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
 
   Widget _buildMessageBubble(GroupMessage message) {
     // В реальном приложении нужно получить данные отправителя из базы
-    final isMe = message.senderId == 1; // Заглушка: текущий пользователь имеет ID=1
-    
+    final isMe =
+        message.senderId == 1; // Заглушка: текущий пользователь имеет ID=1
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
         children: [
           if (!isMe)
             const CircleAvatar(
@@ -438,7 +458,8 @@ class _GroupDetailScreenState extends State<GroupDetailScreen> {
           if (!isMe) const SizedBox(width: 8),
           Expanded(
             child: Column(
-              crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Container(
                   padding: const EdgeInsets.all(12),

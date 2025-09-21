@@ -1,43 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// Импорт экранов
-import 'screens/auth/login_screen.dart';
-import 'database/database_helper.dart';
-import 'services/notification_service.dart';
+import 'core/di/locator.dart';
+import 'presentation/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Инициализация данных для локализации дат (русский язык)
-  await initializeDateFormatting('ru_RU', null);
-  
-  // Инициализация базы данных
-  final dbHelper = DatabaseHelper();
-  await dbHelper.database;
-  
-  // Инициализация уведомлений
-  await NotificationService().initialize();
-  
-  runApp(const SecretaryApp());
+  await setupLocator();
+  runApp(const MyApp());
 }
 
-class SecretaryApp extends StatelessWidget {
-  const SecretaryApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Секретарь',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<AuthCubit>()),
+        BlocProvider(create: (context) => getIt<HomeCubit>()),
+        BlocProvider(create: (context) => getIt<ChatsCubit>()),
+        BlocProvider(create: (context) => getIt<ChatCubit>()),
+        BlocProvider(create: (context) => getIt<TasksCubit>()),
+        BlocProvider(create: (context) => getIt<TaskCubit>()),
+        BlocProvider(create: (context) => getIt<AboutCubit>()),
+        BlocProvider(create: (context) => getIt<SettingsCubit>()),
+      ],
+      child: MaterialApp(
+        title: 'Cluster App',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: const App(),
       ),
-      home: const LoginScreen(),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

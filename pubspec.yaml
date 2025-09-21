@@ -7,22 +7,34 @@ environment:
   # sdk: ^3.9.2
   sdk: '>=3.0.0 <4.0.0'
 
+name: cluster_app
+description: A Flutter application for team collaboration
+
+environment:
+  sdk: ">=2.17.0 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
-  sqflite: ^2.2.8+4
-  path: ^1.8.3
-  intl: ^0.18.1
-  file_picker: ^5.5.0
-  flutter_local_notifications: ^16.3.0
-  timezone: ^0.9.1
-  table_calendar: ^3.0.9
+  get_it: ^7.2.0
+  flutter_bloc: ^8.1.1
+  equatable: ^2.0.5
+  dio: ^4.0.6
+  shared_preferences: ^2.0.15
+  web_socket_channel: ^2.2.0
+  cached_network_image: ^3.2.3
+  image_picker: ^0.8.5+3
+  file_picker: ^4.6.1
+  intl: ^0.17.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^2.0.0
+  build_runner: ^2.1.11
 flutter:
   uses-material-design: true
 

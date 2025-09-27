@@ -1,0 +1,79 @@
+lib/
+├── main.dart
+├── app.dart
+├── di/
+│   └── dependency_injection.dart
+├── core/
+│   ├── constants.dart
+│   └── utils.dart
+├── data/
+│   └── repositories/
+│       ├── http_repo.dart
+│       ├── websocket_repo.dart
+│       ├── cache_repo.dart
+│       ├── users_repo.dart
+│       ├── chats_repo.dart
+│       └── tasks_repo.dart
+├── domain/
+│   ├── entities/
+│   │   ├── user.dart
+│   │   ├── chat.dart
+│   │   ├── task.dart
+│   │   └── message.dart
+│   ├── services/
+│   │   ├── http_service.dart
+│   │   ├── websocket_service.dart
+│   │   ├── cache_service.dart
+│   │   ├── users_service.dart
+│   │   ├── chats_service.dart
+│   │   └── tasks_service.dart
+│   ├── usecases/
+│   │   ├── auth_uc.dart
+│   │   ├── load_chats_uc.dart
+│   │   ├── create_chat_uc.dart
+│   │   ├── add_to_chat_uc.dart
+│   │   ├── send_message_uc.dart
+│   │   ├── edit_message_uc.dart
+│   │   ├── delete_message_uc.dart
+│   │   ├── get_messages_uc.dart
+│   │   ├── load_tasks_uc.dart
+│   │   ├── create_task_uc.dart
+│   │   ├── edit_task_uc.dart
+│   │   ├── delete_task_uc.dart
+│   │   ├── complete_task_uc.dart
+│   │   ├── load_users_uc.dart
+│   │   └── update_user_info_uc.dart
+│   └── bloc/
+│       ├── home_cubit.dart
+│       ├── auth_cubit.dart
+│       ├── chats_cubit.dart
+│       ├── chat_cubit.dart
+│       ├── tasks_cubit.dart
+│       ├── task_cubit.dart
+│       ├── settings_cubit.dart
+│       └── about_cubit.dart
+├── presentation/
+│   ├── screens/
+│   │   ├── home_screen.dart
+│   │   ├── auth_screen.dart
+│   │   ├── reg_screen.dart
+│   │   ├── forgot_screen.dart
+│   │   ├── chats_screen.dart
+│   │   ├── chat_screen.dart
+│   │   ├── create_chat_screen.dart
+│   │   ├── tasks_screen.dart
+│   │   ├── task_screen.dart
+│   │   ├── create_task_screen.dart
+│   │   ├── about_screen.dart
+│   │   ├── edit_about_screen.dart
+│   │   └── settings_screen.dart
+│   ├── widgets/
+│   │   ├── custom_button.dart
+│   │   ├── chat_card.dart
+│   │   ├── task_card.dart
+│   │   └── message_bubble.dart
+│   └── dialogs/
+│       ├── loading_dialog.dart
+│       ├── ask_dialog.dart
+│       └── error_dialog.dart
+pubspec.yaml
